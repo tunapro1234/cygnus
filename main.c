@@ -21,11 +21,11 @@ void matrix_fill(matrix_t *self, f64 data);
 
 
 int main() {
-    size_t shape[] = { 2, 3, 4 };
+    size_t shape[] = { 3, 2, 8 };
     matrix_t *m1 = matrix_new(LEN(shape), shape);
     matrix_fill_wf(m1, m_fill);
 
-    matrix_print_2(m1);
+    matrix_print(m1);
     return 0;
 }
 

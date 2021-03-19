@@ -41,6 +41,13 @@ bool matrix_change_shape(matrix_t *self, size_t new_dim, const size_t *new_shape
 	return False;
 }
 
+void _matrix_print(const matrix_t *self) {
+	size_t i, len = matrix_length(self);
+	for (i = 0; i < len; i++) 
+		printf("%lf", self->data[i]);
+}
+
+/*
 size_t* _matrix_calc_lens(const matrix_t *self) {
 	size_t i, plen = 1;
 	size_t *lens = (size_t *)malloc(sizeof(size_t) * self->dim);
@@ -52,21 +59,15 @@ size_t* _matrix_calc_lens(const matrix_t *self) {
 	return lens;
 }
 
-void _matrix_print(const matrix_t *self) {
-	size_t i, len = matrix_length(self);
-	for (i = 0; i < len; i++) 
-		printf("%lf", self->data[i]);
-}
-
 void matrix_print_1(const matrix_t *self) {
 	size_t i, j, len = matrix_length(self);
 	size_t *lens = _matrix_calc_lens(self);
-	/* 
+	 * 
 	 * lens hesaplama yaptım ve her biri için % operatörü kullanıyorum
 	 * ama arakdan ilerleyerek bölerek ilerleyebiliriz.
 	 * 
 	 * ya da lensin başından ilerleyerek ve bölerek ilerleyebiliriz
-	 */
+	 *
 	for (i = 0; i < len; i++) {
 		if (i == 0)
 			for (j = 0; j < self->dim; j++)
@@ -91,13 +92,38 @@ void matrix_print_1(const matrix_t *self) {
 			for (j = 0; j < self->dim; j++)
 				printf("]");
 	}
-}
+} */
 
-void matrix_print_2(const matrix_t *self) {
+void matrix_print(const matrix_t *self) {
     size_t i, j, k, l, m, p, len = matrix_length(self);
 
 	/* 
-	 * algoritmayı anlatıcam kahvaltıdan sonra
+	 * elimden geldiğince numpy a benzetmeye çalıştım ve gayet güzel çalıştı
+	 * 
+	 * 	değişken isimlerinin kısa olması sinir bozucu ve okunabilirliği azaltıyor 
+	 * biliyorum ama böyle kalacak gibi duruyor
+	 * 
+	 * 	şimdi indexi shapein sonundan başlayarak bölüyoruz ve bölebildiğimiz her 
+	 * sayı için "l"yi bir arttırıyoruz, "j" shape sayacı (geriye doğru giden)
+	 * "p" bölünen sayı. 
+	 * 
+	 * 	"j" değişkeni size_t tipinde olduğu için 1 yukarı shiftledim, o yüzden 
+	 * j-1. elemana bakıyoruz
+	 * 
+	 * j 0 olabiliyor ve böyle olması hoş değil çünkü size_t nin alabileceği en büyük
+	 * sayıdaki elemanı okumaya çalışıyoruz ve ub. 
+	 * 
+	 * p shapein j. elemanına bölünemeye başladığında else kısmına giriyoruz
+	 * eğer parantez koyulmuşsa if (l) 
+	 * 		koyulan parantez kadar alt satıra indik
+	 * 		toplam parantez sayısı - koyulan parantez kadar boşluk koyduk
+	 * 
+	 * eğer parantez koyulmamışsa boşluk koyuyoruz (elemanlar arası)
+	 * 
+	 * eğer son elemanda değilsek
+	 * 		kapatılan parantez kadar parantez açıyoruz
+	 * 
+	 * bir daha algoritma anlatmaya çalışmicam
 	 * 
 	 */
 
@@ -110,7 +136,7 @@ void matrix_print_2(const matrix_t *self) {
 		p = i+1;
         j = self->dim;
         while (True) {
-            if (p % self->shape[j-1] == 0 && (p /= self->shape[j-1]) >= 1) { 
+            if (j != 0 && p % self->shape[j-1] == 0 && (p /= self->shape[j-1]) >= 1) { 
                 printf("]");
 				l++;
             } else {

@@ -20,11 +20,14 @@ void _matrix_set_shape(matrix_t *self, size_t new_dim, const size_t *new_shape);
 bool matrix_change_shape(matrix_t *self, size_t new_dim, const size_t *new_shape);
 
 void _matrix_print(const matrix_t *self);
-void matrix_print_1(const matrix_t *self);
-void matrix_print_2(const matrix_t *self);
-size_t* _matrix_calc_lens(const matrix_t *self);
+void matrix_print(const matrix_t *self);
 
 f64 m_fill(matrix_t *self, size_t index);
 void matrix_fill_wf(matrix_t *self, f64 (*func)(matrix_t*, size_t));
 void matrix_fill(matrix_t *self, f64 data);
 
+
+/*
+size_t* _matrix_calc_lens(const matrix_t *self);
+void matrix_print_1(const matrix_t *self);
+*/
