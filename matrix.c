@@ -94,7 +94,38 @@ void matrix_print_1(const matrix_t *self) {
 }
 
 void matrix_print_2(const matrix_t *self) {
-    
+    size_t i, j, k, l, m, p, len = matrix_length(self);
+
+	/* 
+	 * algoritmayı anlatıcam kahvaltıdan sonra
+	 * 
+	 */
+
+    for (i = 0; i < self->dim; i++) printf("[");
+
+    for (i = 0; i < len; i++) {
+        printf("%.2lf", self->data[i]);
+        
+		l = 0;
+		p = i+1;
+        j = self->dim;
+        while (True) {
+            if (p % self->shape[j-1] == 0 && (p /= self->shape[j-1]) >= 1) { 
+                printf("]");
+				l++;
+            } else {
+				if (l) {
+					for (m = l; m > 0; m--) printf("\n");
+					for (k = self->dim - l; k > 0; k--) printf(" ");
+				} else printf(" ");
+				if (i != len-1)
+					for (; l > 0; l--) 
+						printf("[");
+				break;
+			}
+            j--;
+        }
+    }
 }
 
 f64 m_fill(matrix_t *self, size_t index) 
