@@ -2,20 +2,20 @@
 
 
 
-void matrix_init(matrix_t *self, size_t dim, const size_t *shape) {
-	self->data = (f64 *)malloc(sizeof(f64) * _matrix_length(dim, shape));
+void matrixh_init(matrix_t *self, size_t dim, const size_t *shape) {
+	self->data = (f64 *)malloc(sizeof(f64) * matrix_length_(dim, shape));
 
 	self->shape = (size_t *)malloc(sizeof(size_t) * dim);
 	_matrix_set_shape(self, dim, shape);
 }
 
-matrix_t* matrix_new(size_t dim, const size_t *shape) {
+matrix_t* matrixh_new(size_t dim, const size_t *shape) {
 	matrix_t *new_matrix = (matrix_t *)malloc(sizeof(matrix_t));
-	matrix_init(new_matrix, dim, shape);
+	matrixh_init(new_matrix, dim, shape);
 	return new_matrix;
 }
 
-size_t _matrix_length(size_t dim, const size_t *shape) {
+size_t matrix_length_(size_t dim, const size_t *shape) {
 	size_t i, len = 1;
 	for (i = 0; i < dim; i++) 
 		len *= shape[i];
@@ -23,7 +23,7 @@ size_t _matrix_length(size_t dim, const size_t *shape) {
 }
 
 size_t matrix_length(const matrix_t *self) {
-	return _matrix_length(self->dim, self->shape);
+	return matrix_length_(self->dim, self->shape);
 }
 
 void _matrix_set_shape(matrix_t *self, size_t new_dim, const size_t *new_shape) {
@@ -34,17 +34,11 @@ void _matrix_set_shape(matrix_t *self, size_t new_dim, const size_t *new_shape) 
 }
 
 bool matrix_change_shape(matrix_t *self, size_t new_dim, const size_t *new_shape) {
-	if (matrix_length(self) == _matrix_length(new_dim, new_shape)) {
+	if (matrix_length(self) == matrix_length_(new_dim, new_shape)) {
 		_matrix_set_shape(self, new_dim, new_shape);
 		return True;
 	}
 	return False;
-}
-
-void _matrix_print(const matrix_t *self) {
-	size_t i, len = matrix_length(self);
-	for (i = 0; i < len; i++) 
-		printf("%lf", self->data[i]);
 }
 
 /*
